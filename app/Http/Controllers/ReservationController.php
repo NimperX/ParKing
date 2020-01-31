@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Reservation;
+use Session;
+use DB;
 
 
 class ReservationController extends Controller
@@ -28,7 +30,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
-         return view('reservations.create');
+         return view('crud.reservations.create');
     }
 
     /**
@@ -40,20 +42,21 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
          $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required'
+            'duration_from'=>'required',
+            'duration_to'=>'required',
+            'parking_id'=>'required',
+            'vehicle_type' => 'required'
         ]);
-
         $reservation = new Reservation([
-            'driver_id' => $request->get('driver_id'),
-            'parking_space_id' => $request->get('parking_space_id'),
+            'driver_id' => Session::get('driverid'),
+            'vehicle_type' => $request->get('vehicle_type'),
+            'parking_space_id' => $request->get('parking_id'),
             'duration_from' => $request->get('duration_from'),
-            'duration_to' => $request->get('duration_to'),
+            'duration_to' => $request->get('duration_to')
             
         ]);
         $reservation->save();
-        return redirect('/reservations')->with('success', 'Reservation saved!');
+        return redirect('/logindriver')->with('success', 'Reservation saved!');
     }
 
     /**
@@ -75,8 +78,8 @@ class ReservationController extends Controller
      */
     public function edit($id)
     {
-         $reservation = Reservation::find($id);
-        return view('reservations.edit', compact('reservation'));
+        $vehicles = DB::table('parking_vehicle_types')->where('parking_space_id',$id)->get();
+        return view('crud.reservations.edit')->with('parking_id',$id)->with('vehicles',$vehicles);
     }
 
     /**
@@ -116,7 +119,6 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::find($id);
         $reservation->delete();
-
-        return redirect('/reservations')->with('success', 'Reservation deleted!');
+        return redirect('/logindriver')->with('success', 'Reservation deleted!');
     }
 }

@@ -61,6 +61,8 @@
 <th scope="col">Address</th>
 <th scope="col">Landowner Name</th>
 <th scope="col">Verified</th>
+<th></th>
+<th></th>
 
 </tr>
 </thead>
@@ -72,6 +74,18 @@
 <td>{{$parking_space->address}}</td>
 <td>{{DB::table('landowners')->where('id',$parking_space->landowner_id)->value('first_name')}}</td>
 <td>{{$parking_space->verified=='1'?'Yes':'No'}}</td>
+<td>
+  @if($parking_space->latitude && $parking_space->longitude)
+  <a href="http://maps.google.com/maps?q={{ $parking_space->latitude}},{{ $parking_space->longitude }}&ll={{ $parking_space->latitude}},{{ $parking_space->longitude }}&z=17"  target="_blank">
+    <button class="btn btn-success">View</button>
+  </a>
+  @endif
+</td>
+<td>
+  <a href="{{ route('reservations.edit',$parking_space->id) }}">
+    <button class="btn btn-success">Add reservation</button>
+  </a>
+</td>
 </tr>
 @endforeach
 </tbody>

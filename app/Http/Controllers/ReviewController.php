@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Review;
 use DB;
+use Session;
 
 
 class ReviewController extends Controller
@@ -41,21 +42,17 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
          $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required'
+            'review' => 'required',
+            'parking_id' => 'required'
         ]);
 
         $review = new Review([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
-            'email' => $request->get('email'),
-            'job_title' => $request->get('job_title'),
-            'city' => $request->get('city'),
-            'country' => $request->get('country')
+            'driver_id' => Session::get('driverid'),
+            'parking_space_id' => $request->parking_id,
+            'review' => $request->review
         ]);
         $review->save();
-        return redirect('/reviews')->with('success', 'Review saved!');
+        return redirect('/logindriver')->with('success', 'Review saved!');
     }
 
     /**
@@ -78,7 +75,7 @@ class ReviewController extends Controller
     public function edit($id)
     {
          $review = Review::find($id);
-        return view('reviews.edit', compact('review'));
+        return view('crud.reviews.create')->with('parking_id',$id);
     }
 
     /**

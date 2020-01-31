@@ -23,9 +23,13 @@
 
           <div class="form-group">
               <label for="address">Address:</label>
-              <input type="text" class="form-control" name="address" autocomplete="on" required/>
+              <input type="text" class="form-control map-input" name="address" id="address-input" autocomplete="on" required/>
           </div>
-
+          <input type="hidden" name="latitude" id="address-latitude" value="0" />
+          <input type="hidden" name="longitude" id="address-longitude" value="0" />
+          <div id="address-map-container" style="width:100%;height:400px; ">
+            <div style="width: 100%; height: 100%" id="address-map"></div>
+          </div>
           <div class="form-group">
               <label for="description">Description:</label>
               <input type="textarea" class="form-control" name="description" autocomplete="on" required/>
@@ -158,4 +162,6 @@
   </div>
 </div>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize" async defer></script>
+  <script src="{{ asset('assets/js/mapInput.js') }}"></script>
 @endsection

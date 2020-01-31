@@ -25,9 +25,13 @@
 
             <div class="form-group">
                 <label for="last_name">Location:</label>
-                <input type="text" class="form-control" name="address" value={{ $parking_space->address }} />
+                <input type="text" class="form-control map-input" id="address-input" name="address" value={{ $parking_space->address }} />
             </div>
-
+            <input type="hidden" name="latitude" id="address-latitude" value="{{ $parking_space->latitude }}" />
+            <input type="hidden" name="longitude" id="address-longitude" value="{{ $parking_space->longitude }}" />
+            <div id="address-map-container" style="width:100%;height:400px; ">
+                <div style="width: 100%; height: 100%" id="address-map"></div>
+            </div>
             <div class="form-group">
                 <label for="email">Description:</label>
                 <input type="text" class="form-control" name="description" value={{ $parking_space->description }} />
@@ -47,4 +51,6 @@
         </form>
     </div>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initialize" async defer></script>
+  <script src="{{ asset('assets/js/mapInput.js') }}"></script>
 @endsection

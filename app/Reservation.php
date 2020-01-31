@@ -10,6 +10,7 @@ class Reservation extends Model
       'driver_id' ,
       'parking_space_id' ,
       'duration_from' ,
-      'duration_to'
+      'duration_to',
+      'vehicle_type'
     ];
 }

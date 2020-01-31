@@ -60,6 +60,8 @@ class Parking_spaceController extends Controller
             'landowner_id' => Session::get('landownerid'),
             'name' => $request->get('name'),
             'address' => $request->get('address'),
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
             'description' => $request->get('description'),
             
             //'open_on' => $request->get('open_on'),
@@ -140,6 +142,8 @@ class Parking_spaceController extends Controller
         $parking_space = Parking_space::find($id);
         $parking_space->name =  $request->get('name');
         $parking_space->address = $request->get('address');
+        $parking_space->longitude = $request->longitude;
+        $parking_space->latitude = $request->latitude;
         $parking_space->description = $request->get('description');
         $parking_space->reservation_status_on = $request->get('reservation_status');
         $parking_space->poya = $request->get('opentime1');
@@ -199,14 +203,15 @@ class Parking_spaceController extends Controller
                     $output .= '</td>
                   </td>
                     <td>'.DB::table('admins')->where('id',$parking_space->admin_id)->value('first_name').'</td>
-                    <td>
-                        <form action="/landDetails" method="GET" role="search">
-                          <input type="hidden" value="'.$parking_space->id.'" name="landDetails_id">
-                          <button class="btn btn-outline-success" type="submit">View</button> 
-                        </form>
-                    </td>
-                  </tr>';
-                }
+                    <td>';
+                    if($parking_space->latitude && $parking_space->longitude){
+                        $output .= '<a href="http://maps.google.com/maps?q='.$parking_space->latitude.','.$parking_space->longitude.'&ll='.$parking_space->latitude.','.$parking_space->longitude.'&z=17"  target="_blank">
+                                    <button class="btn btn-outline-success">View</button>
+                                    </a>';
+                    }
+                    $output .= '</td>
+                                </tr>';
+                    }
 
                 return Response($output);
             }
@@ -225,6 +230,13 @@ class Parking_spaceController extends Controller
                     <td>'.$parking_space->address.'</td>
                     <td>'.DB::table('landowners')->where('id',$parking_space->landowner_id)->value('first_name').'</td>
                     <td>'.($parking_space->verified=='1'?'Yes':'No');
+                    $output .= '<td>';
+                    if($parking_space->latitude && $parking_space->longitude){
+                    $output .= '<a href="http://maps.google.com/maps?q='.$parking_space->latitude.','.$parking_space->longitude.'&ll='.$parking_space->latitude.','.$parking_space->longitude.'&z=17"  target="_blank">
+                        <button class="btn btn-success">View</button>
+                    </a>';
+                    }
+                    $output .= '</td>';
                 }
 
                 return Response($output);

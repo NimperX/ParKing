@@ -41,10 +41,11 @@
         echo $name;
       ?></td>
       <td>
-          <form action="/landDetails" method="GET" role="search">
-            <input type="hidden" value="{{$parking_space->id}}" name="landDetails_id">
-            <button class="btn btn-outline-success" type="submit">View</button> 
-          </form>
+        @if($parking_space->latitude && $parking_space->longitude)
+        <a href="http://maps.google.com/maps?q={{ $parking_space->latitude}},{{ $parking_space->longitude }}&ll={{ $parking_space->latitude}},{{ $parking_space->longitude }}&z=17"  target="_blank">
+          <button class="btn btn-outline-success">View</button>
+        </a>
+        @endif
       </td>
     </tr>
     @endforeach

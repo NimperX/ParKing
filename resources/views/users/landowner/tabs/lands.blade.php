@@ -28,10 +28,15 @@
             <!-- <button class="button button2" href="#">View</button> -->
             <!-- <button class="button button2" href="#">Request Update</button> -->
             <!-- <button type="button" href="#">Request Delete</button> -->
-            <form action="/landDetails" method="GET" role="search">
+            {{-- <form action="/landDetails" method="GET" role="search">
               <input type="hidden" value="{{$parking_space->id}}" name="landDetails_id">
               <button class="btn btn-outline-success" type="submit">View</button>
-            </form>
+            </form> --}}
+              @if($parking_space->latitude && $parking_space->longitude)
+              <a href="http://maps.google.com/maps?q={{ $parking_space->latitude}},{{ $parking_space->longitude }}&ll={{ $parking_space->latitude}},{{ $parking_space->longitude }}&z=17" target="_blank">
+                <button class="btn btn-outline-success">View</button>
+              </a>
+              @endif
             <!-- <button type="button" class="btn btn-outline-success">Request Update</button> -->
             <form action="/landEdit" method="GET" role="search">
               <input type="hidden" value="{{$parking_space->id}}" name="landEdit_id">
